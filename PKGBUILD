@@ -12,10 +12,15 @@ depends=('speex')
 makedepends=('cmake')
 source=(
 	"$pkgname-$pkgver.tar.gz::https://github.com/jiixyj/$pkgname/archive/v$pkgver.tar.gz"
+	$pkgname-$pkgver-speex-stdint.patch
 )
+sha256sums=('01aa7aed90c593944eeb3087a6f965557dc708de360bf1a589b3babb021e7336'
+            '1e1f15aee8b1511ffccd5589ca0bb9fce3a4a905acc440e441bf038fb5a8abc6')
 
 prepare() {
 	cd "$pkgname-$pkgver"
+
+	patch -fNp1 -i ${srcdir}/$pkgname-$pkgver-speex-stdint.patch
 
 	[[ -d build ]] && rm -rf build
 	mkdir build
@@ -37,5 +42,3 @@ package() {
 	cd build
 	make DESTDIR="$pkgdir" install
 }
-
-sha256sums=('01aa7aed90c593944eeb3087a6f965557dc708de360bf1a589b3babb021e7336')
